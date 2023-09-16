@@ -1,0 +1,11 @@
+.roomSelect {
+    padding: 10px 20px;
+    width: 100%;
+    text-align: left;
+    transition: 0.15s ease;
+}
+
+.roomSelect:hover {
+    color: #ffffff;
+    background: #9568b5;
+}
