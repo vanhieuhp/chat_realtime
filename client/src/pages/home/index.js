@@ -10,34 +10,27 @@ const fieldConst = require("../../utils/field-const")
 const localStorage = window.localStorage;
 
 const Home = ({socket}) => {
-    const [loading, setLoading] = useState(false);
+    let loading = false;
     const {room, setRoom, username, setUsername} = UserState();
     const userInfo = JSON.parse(localStorage.getItem(fieldConst.USER_INFO));
     const navigate = useNavigate(); // Add this
-    if (userInfo !== null) {
-        setTimeout(() => {
-            setLoading(true);
-        }, 500);
+    if (userInfo != null) {
+        loading = true;
+    }
+    if (room !== undefined && username !== undefined && userInfo != null) {
         setTimeout(() => {
             navigate("/chat", { replace: true }); // Add this
         }, 2000); // Delay for 1 second (1000 milliseconds)
     }
     const joinRoom = async () => {
         if (room !== undefined && username !== undefined) {
-            await socket.emit(fieldConst.JOIN_ROOM, {username, room});
+            // save into local-storage
             const dataToStore = {
                 username: username,
                 room: room,
             }
-            await socket.on(fieldConst.USER_ID, (userId) => {
-                dataToStore.id = userId;
-                console.log("")
-            });
-            setTimeout(() => {
-                console.log(dataToStore)
-                localStorage.setItem(fieldConst.USER_INFO, JSON.stringify(dataToStore));
-                navigate("/chat", { replace: true }); // Add this
-            }, 2000);
+            localStorage.setItem(fieldConst.USER_INFO, JSON.stringify(dataToStore));
+            navigate("/chat", { replace: true }); // Add this
         }
     }
     const [isShowRoomOption, setIsShowRoomOption] = useState(false);

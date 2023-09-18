@@ -27,24 +27,27 @@ io.on(fieldConst.CONNECTION, (socket) => {
         const { username, room } = data;
         socket.join(room);
 
-        let created_date = Date.now();
+        const date = new Date();
+        const created_date = date.toISOString();
+
+        await Promise.resolve();
         socket.to(room).emit(fieldConst.RECEIVE_MESSAGE, {
             message: `${username} has joined the chat room`,
             username: fieldConst.CHAT_BOT,
-            created_date,
+            created_date: created_date,
         })
 
         socket.emit(fieldConst.RECEIVE_MESSAGE, {
             message: `Welcome ${username}`,
             username: fieldConst.CHAT_BOT,
-            created_date
+            created_date: created_date,
         })
 
         socket.emit(fieldConst.USER_ID, {
             id: socket.id,
         })
         chatRoom = room;
-        allUsers.push({id: socket.id, username: username, room});
+        allUsers.push({id: socket.id, username: username, room: room});
         let chatRoomUsers = allUsers.filter((user) => user.room === room);
         socket.to(room).emit(fieldConst.CHAT_ROOM_USERS, chatRoomUsers);
         socket.emit(fieldConst.CHAT_ROOM_USERS, chatRoomUsers);
@@ -56,7 +59,10 @@ io.on(fieldConst.CONNECTION, (socket) => {
     })
 
     socket.on(fieldConst.SEND_MESSAGE, async (data) => {
-        const { message, username, room } = data;
+        const date = new Date();
+        data["created_date"] = date.toISOString();
+
+        let { message, username, room } = data;
         io.in(room).emit(fieldConst.RECEIVE_MESSAGE, data);
         const response= await msgService.createMessage(username, message, room);
         console.log(`${username} send message to ${room}: ${response}`)
@@ -66,7 +72,8 @@ io.on(fieldConst.CONNECTION, (socket) => {
     socket.on(fieldConst.LEAVE_ROOM, async (data) => {
         const { username, room } = data;
         socket.leave(room);
-        const createdDate = Date.now();
+        const date = new Date();
+        const created_date = date.toISOString();
 
         // remove user from memory
         allUsers = leaveRoom(socket.id, allUsers);
@@ -74,7 +81,7 @@ io.on(fieldConst.CONNECTION, (socket) => {
         socket.to(room).emit(fieldConst.RECEIVE_MESSAGE, {
             username: fieldConst.CHAT_BOT,
             message: `${username} has left the chat`,
-            createdDate
+            created_date: created_date,
         })
         console.log(`${username} has left the chat`);
     })

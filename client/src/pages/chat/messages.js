@@ -17,7 +17,7 @@ const Messages = ({socket}) => {
                 {
                     message: data.message,
                     username: data.username,
-                    createdDate: data.created_date,
+                    created_date: data.created_date,
                 },
             ]);
         });

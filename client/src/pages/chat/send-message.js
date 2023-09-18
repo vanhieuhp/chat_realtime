@@ -8,15 +8,13 @@ const SendMessage = ({socket}) => {
 
     const sendMessage = () => {
         if (message !== "") {
-            const createdDate = Date.now();
-
-            socket.emit("send_message", {username, room, message, createdDate});
+            socket.emit("send_message", {username, room, message});
             setMessage("");
         }
     }
 
     return (
-        <div className={styles.sendMessageContainer}>
+        <div className="py-[16px] px-[20px]">
             <input
                 className={styles.messageInput}
                 placeholder='Message...'
