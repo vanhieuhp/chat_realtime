@@ -13,11 +13,12 @@ const UserProvider = ({ children }) => {
     const userInfo = JSON.parse(localStorage.getItem(fieldConst.USER_INFO));
     useEffect(() => {
         if (userInfo !== null) {
-            setUsername(userInfo.username);
-            setRoom(userInfo.room);
+            console.log("use state")
+            // setUsername(userInfo.username);
+            // setRoom(userInfo.room);
             // navigate("/chat", { replace: true }); // Add this
         } else {
-            navigate("/home", { replace: true }); // Add this
+            // navigate("/home", { replace: true }); // Add this
         }
     }, [userInfo]);
 

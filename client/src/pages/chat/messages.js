@@ -1,9 +1,10 @@
 // client/src/pages/chat/messages.js
 
-import {useEffect, useRef, useState} from 'react';
+import {useEffect, useRef, useState} from "react";
 import fieldConst from "../../utils/field-const";
+import styles from "./styles.module.css"
 
-const Messages = ({ socket }) => {
+const Messages = ({socket}) => {
     const [messagesRecieved, setMessagesReceived] = useState([]);
 
     const messagesColumnRef = useRef(null); // Add this
@@ -29,7 +30,6 @@ const Messages = ({ socket }) => {
     useEffect(() => {
         // Last 100 messages sent in the chat room (fetched from the db in backend)
         socket.on(fieldConst.LAST_100_MESSAGES, (last100Messages) => {
-
             // Sort these messages by __createdtime__
             last100Messages = sortMessagesByDate(last100Messages);
             setMessagesReceived((state) => [...last100Messages, ...state]);
@@ -52,23 +52,41 @@ const Messages = ({ socket }) => {
         );
     }
 
-    // dd/mm/yyyy, hh:mm:ss
     function formatDateFromTimestamp(timestamp) {
+        const options_date = {
+            day: '2-digit',
+            month: 'short',
+            hour: '2-digit',
+            minute: '2-digit'
+        };
+        const options_time = {
+            hour: '2-digit',
+            minute: '2-digit'
+        };
         const date = new Date(timestamp);
-        return date.toLocaleString();
+        const currentDate = new Date();
+        const timeDifference = currentDate - date; // Calculate the time difference in milliseconds
+
+        if (timeDifference < 24 * 60 * 60 * 1000) {
+            return date.toLocaleTimeString('en-US', options_time);
+        } else {
+            return date.toLocaleDateString('en-US', options_date);
+        }
     }
 
     return (
         // Add ref to this div
-        <div className="py-[20px]" ref={messagesColumnRef}>
+        <div className={styles.messagesColumn} ref={messagesColumnRef}>
             {messagesRecieved.map((msg, i) => (
-                <div className="bg-amber-100" key={i}>
-                    <div className="">
-                        <span className="">{msg.username}</span>
-                        <span className="">{formatDateFromTimestamp(msg.created_date)}</span>
+                <div className="mt-[20px] flex" key={i}>
+                    <div className="bg-amber-500 w-fit px-[20px] py-[10px] rounded-[50%] h-fit mr-[10px]">
+                        {msg.username.at(0)}
                     </div>
-                    <p className="">{msg.message}</p>
-                    <br />
+                    <div className="bg-[#F2F2F7] flex flex-col w-[45%] rounded-3xl px-[10px] py-[10px]">
+                        <span className="font-bold text-start">{msg.username}</span>
+                        <p className="text-start">{msg.message}</p>
+                        <span className="text-end">{formatDateFromTimestamp(msg.created_date)}</span>
+                    </div>
                 </div>
             ))}
         </div>

@@ -23,8 +23,8 @@ const SendMessage = ({socket}) => {
                 onChange={(e) => setMessage(e.target.value)}
                 value={message}
             />
-            <button className='btn btn-primary' onClick={sendMessage}>
-                Send Message
+            <button className='bg-[#8C67F6] hover:opacity-90 text-white font-bold px-[20px] py-[10px] w-fit rounded-2xl ' onClick={sendMessage}>
+                Send
             </button>
         </div>
     );

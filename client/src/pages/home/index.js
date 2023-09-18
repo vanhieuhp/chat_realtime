@@ -22,14 +22,22 @@ const Home = ({socket}) => {
             navigate("/chat", { replace: true }); // Add this
         }, 2000); // Delay for 1 second (1000 milliseconds)
     }
-    const joinRoom = () => {
+    const joinRoom = async () => {
         if (room !== undefined && username !== undefined) {
-            socket.emit(fieldConst.JOIN_ROOM, {username, room});
+            await socket.emit(fieldConst.JOIN_ROOM, {username, room});
             const dataToStore = {
-                username: username, room: room
+                username: username,
+                room: room,
             }
-            localStorage.setItem(fieldConst.USER_INFO, JSON.stringify(dataToStore));
-            navigate("/chat", {replace: true}); // Add this
+            await socket.on(fieldConst.USER_ID, (userId) => {
+                dataToStore.id = userId;
+                console.log("")
+            });
+            setTimeout(() => {
+                console.log(dataToStore)
+                localStorage.setItem(fieldConst.USER_INFO, JSON.stringify(dataToStore));
+                navigate("/chat", { replace: true }); // Add this
+            }, 2000);
         }
     }
     const [isShowRoomOption, setIsShowRoomOption] = useState(false);

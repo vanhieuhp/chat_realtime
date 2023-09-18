@@ -8,7 +8,8 @@ const FieldConst = {
     DISCONNECT: "disconnect",
     CONNECTION: "connection",
     USER_INFO: "userInfo",
-    LAST_100_MESSAGES: "last_100_messages"
+    LAST_100_MESSAGES: "last_100_messages",
+    USER_ID: "user_id"
 }
 
 module.exports = FieldConst;

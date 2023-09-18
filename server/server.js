@@ -40,6 +40,9 @@ io.on(fieldConst.CONNECTION, (socket) => {
             created_date
         })
 
+        socket.emit(fieldConst.USER_ID, {
+            id: socket.id,
+        })
         chatRoom = room;
         allUsers.push({id: socket.id, username: username, room});
         let chatRoomUsers = allUsers.filter((user) => user.room === room);
