@@ -3,8 +3,11 @@ import {Route, Routes} from 'react-router-dom';
 import Home from './pages/home';
 import Chat from './pages/chat';
 import io from 'socket.io-client';
-
-const socket = io.connect('http://localhost:4000');
+// import dotenv from "dotenv";
+// dotenv.config();
+// const apiKey = process.env.SERVER;
+// console.log(apiKey);
+const socket = io.connect("http://13.229.230.179:4000");
 
 function App() {
     console.log("APP RUNNING!")
