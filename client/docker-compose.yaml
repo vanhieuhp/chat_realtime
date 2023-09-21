@@ -1,0 +1,7 @@
+version: '3.8'
+services:
+   chat-be:
+      image: vanhieuit10/chat_realtime:fe-v1  # Replace with the name of your Node.js Docker image
+      container_name: chat-fe
+      ports:
+         - "3000:80"

@@ -1,0 +1,12 @@
+version: '3.8'
+services:
+   chat-be:
+      image: vanhieuit10/chat_realtime:be-v1  # Replace with the name of your Node.js Docker image
+      container_name: chat-be
+      ports:
+         - "4000:4000"
+      environment:
+         DB_URL: "192.168.3.126"
+         DB_USERNAME: "admin"
+         DB_PW: "password"
+         DB_NAME: "chat_realtime"
